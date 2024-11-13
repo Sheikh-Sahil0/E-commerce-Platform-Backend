@@ -1,35 +1,29 @@
 package com.example.ecommerce.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key
+    private Long id;
 
-    @Column(nullable = false)
+    @NotEmpty(message = "Name must not be empty")
     private String name;
 
-    @Column(length = 1000) // Optional: To allow longer descriptions
+    @NotEmpty(message = "Description must not be empty")
     private String description;
 
-    @Column(nullable = false)
-    private Double price; // Price cannot be null
+    @NotNull(message = "Price must not be null")
+    @Positive(message = "Price must be a positive number")
+    private Double price;
 
+    @NotEmpty(message = "Category must not be empty")
     private String category;
-
-    // Constructors
-    public Product() {
-    }
-
-    public Product(String name, String description, Double price, String category) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.category = category;
-    }
 
     // Getters and Setters
     public Long getId() {

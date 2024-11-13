@@ -1,35 +1,35 @@
 package com.example.ecommerce.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Primary key
+    private Long id;
 
-    @Column(nullable = false) // Name cannot be null
+    @NotBlank(message = "Name is required")
     private String name;
 
-    @Column(unique = true, nullable = false) // Email must be unique
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email address")
     private String email;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters long")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$",
+            message = "Password must contain at least one letter and one number")
     private String password;
 
-    private String address; // Address is optional
-
-    // Constructors
-    public User() {
-    }
-
-    public User(String name, String email, String password, String address) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-    }
+    private String address;
 
     // Getters and Setters
     public Long getId() {

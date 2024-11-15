@@ -1,5 +1,6 @@
 package com.example.ecommerce.controller;
 
+import com.example.ecommerce.dto.LoginRequest;
 import com.example.ecommerce.exception.EmailAlreadyExistsException;
 import com.example.ecommerce.model.User;
 import com.example.ecommerce.service.UserService;
@@ -57,15 +58,14 @@ public class UserController {
 
     // Signin Endpoint
     @PostMapping("/signin")
-    public ResponseEntity<Object> signIn(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<Object> signIn(@RequestBody LoginRequest loginRequest) {
         try {
-            // Authenticate the user
-            User user = userService.authenticateUser(email, password);
+            User user = userService.authenticateUser(loginRequest.getEmail(), loginRequest.getPassword());
 
             // Generate JWT Token
             String token = userService.generateToken(user);
 
-            // Create response for successful signin
+            // Success response
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Signin successful!");
             response.put("token", token);
@@ -74,10 +74,7 @@ public class UserController {
 
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
-            // Handle invalid credentials
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", ex.getMessage()));
         }
     }
 }

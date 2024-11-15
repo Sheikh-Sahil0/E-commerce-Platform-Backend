@@ -22,6 +22,8 @@ public class Product {
     @Positive(message = "Price must be a positive number")
     private Double price;
 
+    private Integer stock; // Ensure you have stock available for validation
+
     @NotEmpty(message = "Category must not be empty")
     private String category;
 
@@ -56,6 +58,14 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getCategory() {
